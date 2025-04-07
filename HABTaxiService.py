@@ -5,6 +5,16 @@
 # import libraries
 import datetime
 
+# Open Defaults.dat file and read the contents
+f = open("Defaults.dat", "r")
+nextTransactionNumber = int(f.readline())
+nextDriverNumber = int(f.readline())
+monthlyStandFee = float(f.readline())
+dailyRentalFee = float(f.readline())
+weeklyRentalFee = float(f.readline())
+hstRate = float(f.readline())
+f.close()
+
 # Constants 
 CUR_DATE = datetime.datetime.now()
 ALLOWED_CHARS = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ .-'abcdefghijklmnopqrstuvwxyz0123456789_")
