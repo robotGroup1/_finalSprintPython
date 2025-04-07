@@ -19,6 +19,13 @@ f.close()
 CUR_DATE = datetime.datetime.now()
 ALLOWED_CHARS = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ .-'abcdefghijklmnopqrstuvwxyz0123456789_")
 
+# Tables
+employees = []
+revenues = []
+expenses = []
+car_rentals = []
+payments = []
+
 # Main Program
 while True:
     print("\n")
@@ -102,3 +109,4 @@ while True:
         print("Exiting the program.")
         break
         
+    #  
