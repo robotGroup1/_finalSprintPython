@@ -1,3 +1,7 @@
+## Author: Robot Group 1
+## Date: 2025-04-08
+## Description: HAB Taxi Service Company Service System
+
 # import libraries
 import datetime
 
@@ -37,6 +41,14 @@ def _getDate():
     formattedDate = today.strftime("%Y-%m-%d")
     return formattedDate
 
+# Get total revenue, HST, and total amount
+def _getTotalRevenue():
+    global revenues, hstRate
+    revenue = sum(revenues)
+    hst = revenue * hstRate
+    total = revenue + hst
+    return revenue, hst, total
+
 # Save defaults to Defaults.dat
 def _saveDefaults():
     with open("Defaults.dat", "w") as f:
@@ -54,11 +66,13 @@ def _printDefaults ():
         for line in f:
             print(line.strip())
 
-# Open Defaults.dat
 _openDefaults()
 
 # Get current date
 _getDate()
+
+# Load defaults
+nextTransactionNumber, nextDriverNumber, monthlyStandFee, dailyRentalFee, weeklyRentalFee, hstRate = _openDefaults()
 
 # Tables
 employees = []
@@ -66,9 +80,6 @@ revenues = []
 expenses = []
 carRentals = []
 payments = []
-
-# Load defaults
-nextTransactionNumber, nextDriverNumber, monthlyStandFee, dailyRentalFee, weeklyRentalFee, hstRate = _openDefaults()
 
 # Main Program
 while True:
@@ -107,7 +118,7 @@ while True:
         else:
             employees.append(name)
             print("Employee name is " + str(employees))
-    
+        
     # Input and validation for revenue amount
     elif choice == 2:
         revenueAmount = float(input("Enter revenue amount: "))
@@ -119,12 +130,12 @@ while True:
 
     # Input and validation for expense amount
     elif choice == 3:
-            expenseAmount = float(input("Enter expense amount: "))
-            if expenseAmount < 0: 
-                print("Invalid expense amount.")
-            else:
-                expenses.append(expenseAmount)
-                print("Expense amount is " + str(expenseAmount))
+        expenseAmount = float(input("Enter expense amount: "))
+        if expenseAmount < 0: 
+            print("Invalid expense amount.")
+        else:
+            expenses.append(expenseAmount)
+            print("Expense amount is " + str(expenseAmount))
 
     # Input and validation for car rental info
     elif choice == 4:
@@ -158,22 +169,17 @@ while True:
 
     # Print driver financial listing
     elif choice == 7:
-        employeeNum = int(input("Enter employee ID: "))
-        if employeeNum < 0 or (employeeNum).alpha == False:
-            print("Invalid employee ID.")
+        employeeNum = input("Enter employee Number: ")
+        if employeeNum.isdigit() == False or int(employeeNum) < 0:
+            print("Invalid employee Number.")
         else:
             print("Driver Financial Listing:")
             print(f"name: {name}")
             ##print(f"Date Range: ")
-            transaction_date = _getDate()  # Example: Use the current date
-            description = "Driver Revenue"  # Example: Add a description
-            revenue = sum(revenues) if revenues else 0.0  # Example: Total revenue
-            hst = revenue * hstRate  # Example: Calculate HST
-            total = revenue + hst  # Example: Calculate total
-
+            transaction_date = _getDate()
             print(f"Transaction Date: {transaction_date}")
-            print(f"Description: {description}")
             print(f"Employee Number: {employeeNum}")
+            revenue, hst, total = _getTotalRevenue()
             print(f"Revenue: ${revenue:.2f}")
             print(f"HST: ${hst:.2f}")
             print(f"Total: ${total:.2f}")
@@ -183,9 +189,6 @@ while True:
         print("Exiting program.")
         break
 
-# Save to Defaults.dat
 _saveDefaults()
-
-# Print Defaults.dat
 _printDefaults()
 
